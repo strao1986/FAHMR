@@ -8,7 +8,7 @@ The input GWAS summary statistics used in this pipeline must be preprocessed as 
 (1) Excluding SNPs located on sex chromosomes.\
 (2) Removing duplicated SNPs.\
 (3) Standardizing column names to match the required format: chr, pos, rsid, A1 (effect allele), A2 (reference allele), beta, se, p, eaf, N.\
-An example of properly formatted GWAS summary statistics is provided for downloading from our Google Drive repository (Link: https://drive.google.com/drive/folders/1p3nH8z8tztblVUdQZzyPrZRj8l7Mtq9Y?usp=sharing).
+An example of properly formatted GWAS summary statistics for shrimp allergy is provided for downloading from our Google Drive repository (Link: https://drive.google.com/drive/folders/1p3nH8z8tztblVUdQZzyPrZRj8l7Mtq9Y?usp=sharing).
 
 
 **FAHMR comprises two main phases:**
