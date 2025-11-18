@@ -8,7 +8,7 @@ The input GWAS summary statistics used in this pipeline must be preprocessed as 
 (1) Excluding SNPs located on sex chromosomes.\
 (2) Removing duplicated SNPs.\
 (3) Standardizing column names to match the required format: chr, pos, rsid, A1 (effect allele), A2 (reference allele), beta, se, p, eaf, N.\
-An example of properly formatted GWAS summary statistics is provided in the repository for reference. \
+An example of properly formatted GWAS summary statistics is provided in the repository for reference.\
 
 **FAHMR comprises two main phases:**
 ### 1.	Genetic Correlation Evaluation by HDL Program
