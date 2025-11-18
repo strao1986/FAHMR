@@ -1,0 +1,1 @@
+Before running these script, you should download Plink software from https://www.cog-genomics.org/plink2/

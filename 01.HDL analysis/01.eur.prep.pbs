@@ -1,0 +1,51 @@
+#!/bin/bash
+#PBS -N wrang
+#PBS -l nodes=1:ppn=1
+#PBS -e el.01.wrangling.err
+#PBS -o el.01.wrangling.log
+#PBS -q batch
+#PBS -V
+
+### env
+source ~/miniconda3/bin/activate
+
+### HDL
+HDL="/public/zhis/software/HDL/HDL"
+DATA_WRANGLING="${HDL}/HDL.data.wrangling.R"
+
+### ref
+HDL_ref="/public/zhis/ref/HDL_LDrefPanel/UKB_imputed_SVD_eigen99_extraction"
+
+resdir="/public/zhis/all/032.Review_PRS/result/HDL/eur"
+wrang_dir="${resdir}/01.Wrangling"
+
+mkdir -p ${wrang_dir}
+
+
+data_wrangling(){
+ 
+  GWASfile="${1}"
+  GWAStrait="${2}"
+
+  wrang_outdir="${3}"
+  wrang_outpref="${2}.wrangling"
+
+  mkdir -p "${wrang_outdir}"
+
+  Rscript "${DATA_WRANGLING}" \
+	gwas.file="${GWASfile}" \
+	LD.path="${HDL_ref}" \
+	SNP=rsid A1=A1 A2=A2 N=N b=beta se=se \
+	output.file="${wrang_outdir}/${wrang_outpref}" \
+	log.file="${wrang_outdir}/${wrang_outpref}"
+}
+
+### format: GWAS loc, TraitName; tab seprated
+gwaslist_loc="/public/zhis/data/GWAS_241210/eur.info.tsv"
+
+while IFS=$'\\t' read -r tmp1_gwas tmp2_trait; do
+
+	tmp3_outdir="${wrang_dir}"
+	data_wrangling "${tmp1_gwas}" "${tmp2_trait}" "${tmp3_outdir}"
+
+done < "${gwaslist_loc}"

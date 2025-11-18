@@ -1,0 +1,62 @@
+#!/bin/bash
+#PBS -N FoodAllergyFinngen
+#PBS -l nodes=1:ppn=1
+#PBS -e el.02.FoodAllergyFinngen.err
+#PBS -o el.02.FoodAllergyFinngen.log
+#PBS -q batch
+#PBS -V
+
+### env
+source ~/miniconda3/bin/activate
+
+### HDL
+HDL="/public/zhis/software/HDL/HDL"
+HDL_RUN="${HDL}/HDL.run.R"
+
+### ref
+HDL_ref="/public/zhis/ref/HDL_LDrefPanel/UKB_imputed_SVD_eigen99_extraction"
+
+resdir="/public/zhis/all/032.Review_PRS/result/HDL/eur"
+
+wrang_dir="${resdir}/01.Wrangling"
+hdl_dir="${resdir}/02.HDL"
+
+mkdir -p ${hdl_dir}
+
+run(){
+        
+        WranGWAS1="${1}"
+        WranGWAS2="${2}"
+        Trait1="${WranGWAS1%%.*}"
+        Trait2="${WranGWAS2%%.*}"
+        
+        Outdir="${3}/${Trait1}"
+        mkdir -p "${Outdir}"
+
+	Out_pref="${Trait1}-${Trait2}.out"
+## remember check Nref for data from diff population ^ ^
+  Rscript "${HDL_RUN}" \
+        gwas1.df="${WranGWAS1}" \
+        gwas2.df="${WranGWAS2}" \
+        LD.path="${HDL_ref}" \
+	Nref="335265" \
+        output.file="${Outdir}/${Out_pref}"
+}
+
+cd ${wrang_dir}
+list_pheno2="$(ls *.wrangling.hdl.rds)"
+
+i="FoodAllergyFinngen"
+
+	tmp1_gwas="${i}.wrangling.hdl.rds"
+	
+	for j in ${list_pheno2[@]}; do
+
+		tmp2_gwas="${j}"
+
+		if [ ${tmp1_gwas} != ${tmp2_gwas} ]; then
+
+		run "${tmp1_gwas}" "${tmp2_gwas}" "${hdl_dir}"
+		
+		fi
+	done

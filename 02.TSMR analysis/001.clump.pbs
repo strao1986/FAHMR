@@ -1,0 +1,54 @@
+#/bin/bash
+#PBS -N clump_5e6
+#PBS -l nodes=cu04:ppn=5
+#PBS -e clump_5e6.err
+#PBS -o clump_5e6.log
+#PBS -q batch
+#PBS -V
+
+
+### set arguments
+
+plink="/public/jiangjw/plink"
+ref_file="/public/jiangjw/reference/g1000_eas" 
+p1="0.000005"
+p2="1"
+r2="0.1"
+kb="1000"
+
+data_dir1="/public/jiangjw/GWAS_sumstats/EAS/HemotologicalIndicators_ImmuneCell_NBDC"
+data_dir2="/public/jiangjw/GWAS_sumstats/EAS"
+result_dir='/public/jiangjw/GWAS_sumstats/EAS/clump_result/02.p5e6'
+
+cd ${data_dir1}
+trait1=`ls *.clean.txt | cut -d "." -f 1`
+trait2=("ShrimpAllergy","FoodAllergyBBJ")
+
+### perform LD clumping in plink
+
+for i in ${trait1[@]}; do
+	${plink}/plink \
+		--bfile ${ref_file}/g1000_eas \
+		--clump-snp-field rsid \
+		--clump-field p \
+		--clump-p1 ${p1} \
+		--clump-p2 ${p2} \
+		--clump-r2 ${r2} \
+		--clump-kb ${kb} \
+		--clump ${data_dir1}/${i}.clean.txt \
+		--out ${result_dir}/${i}.LD_result
+done
+
+for j in ${trait2[@]}; do
+        ${plink}/plink \
+                --bfile ${ref_file}/g1000_eas \
+                --clump-snp-field rsid \
+                --clump-field p \
+                --clump-p1 ${p1} \
+                --clump-p2 ${p2} \
+                --clump-r2 ${r2} \
+                --clump-kb ${kb} \
+                --clump ${data_dir2}/${j}.clean.txt \
+                --out ${result_dir}/${j}.LD_result
+done
+
