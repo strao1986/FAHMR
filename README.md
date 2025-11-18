@@ -1,4 +1,4 @@
-# FAHMR: Food Allergy & Health Mendelian Randomization Workflow
+# FAHMR: Food Allergy & Health Mendelian Randomization workflow
 FAHMR is an integrated analytical pipeline that combines the High-Definition Likelihood (HDL) framework with two-sample Mendelian randomization (TSMR). Leveraging large-scale GWAS summary statistics, this pipeline was developed to investigate the genetic correlations between polygenically predicted food allergy, especially shrimp allergy and a broad spectrum of common human diseases in the East Asian populations. Moreover, FAHMR enables the assessment of the genetically predicted causal effects of food allergies on multiple disease outcomes.
 ## Overview
 ### GWAS Summary Statistics Source
